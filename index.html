@@ -13,17 +13,16 @@
       flex-direction: column;
       font-family: Arial, sans-serif;
     }
-    header {
+    header, nav {
       background: #0077cc;
       color: white;
       padding: 10px;
       text-align: center;
-      font-size: 20px;
-      font-weight: bold;
     }
     nav {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       background: #005fa3;
     }
     nav button {
@@ -45,11 +44,14 @@
       width: 100%;
       border: none;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <header>Game & App Hub</header>
-  <nav>
+  <header id="header">Game & App Hub</header>
+  <nav id="menu">
     <button onclick="loadGame('https://putman10.github.io/oregon-trail/')">Oregon Trail</button>
     <button onclick="loadGame('https://bigjackson.github.io/Run3Source/')">Run 3</button>
     <button onclick="loadGame('https://the-sawfish.github.io/chat1234567890/login.html')">Chat App</button>
@@ -62,6 +64,8 @@
   <script>
     function loadGame(url) {
       document.getElementById('gameFrame').src = url;
+      document.getElementById('header').classList.add('hidden');
+      document.getElementById('menu').classList.add('hidden');
     }
   </script>
 </body>
