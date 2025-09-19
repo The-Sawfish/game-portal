@@ -13,15 +13,34 @@
     }
     iframe {
       position: fixed;
-      top: 4px;
+      top: 0;
       left: 0;
       width: 100%;
-      height: calc(100% - 4px);
+      height: 100%;
       border: none;
     }
   </style>
 </head>
 <body>
-  <iframe src="https://bigjackson.github.io/Run3Source/"></iframe>
+  <iframe id="gameFrame" src="https://bigjackson.github.io/Run3Source/"></iframe>
+
+  <script>
+    const iframe = document.getElementById('gameFrame');
+
+    // Focus the iframe when the page loads
+    window.addEventListener('load', () => {
+      iframe.contentWindow.focus();
+    });
+
+    // Focus the iframe when user clicks anywhere
+    window.addEventListener('click', () => {
+      iframe.contentWindow.focus();
+    });
+
+    // Optional: focus iframe every second (in case focus is lost)
+    setInterval(() => {
+      iframe.contentWindow.focus();
+    }, 1000);
+  </script>
 </body>
 </html>
