@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game & App Hub</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* 🚫 Prevent scrollbars */
+      font-family: Arial, sans-serif;
+    }
+    body {
       display: flex;
       flex-direction: column;
-      font-family: Arial, sans-serif;
     }
     header, nav {
       background: #0077cc;
@@ -42,10 +46,12 @@
     iframe {
       flex: 1;
       width: 100%;
+      height: 100%; /* 🔒 Always fill viewport */
       border: none;
+      display: none; /* hide until used */
     }
     .hidden {
-      display: none;
+      display: none !important;
     }
   </style>
 </head>
@@ -63,10 +69,26 @@
 
   <script>
     function loadGame(url) {
-      document.getElementById('gameFrame').src = url;
+      const frame = document.getElementById('gameFrame');
+      frame.src = url;
+      frame.style.display = 'block';
       document.getElementById('header').classList.add('hidden');
       document.getElementById('menu').classList.add('hidden');
+      
+      // 🔑 Give iframe focus so keys work
+      frame.onload = () => frame.contentWindow.focus();
     }
+
+    // ⎋ ESC key to go back to menu
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const frame = document.getElementById('gameFrame');
+        frame.src = "";
+        frame.style.display = "none";
+        document.getElementById('header').classList.remove('hidden');
+        document.getElementById('menu').classList.remove('hidden');
+      }
+    });
   </script>
 </body>
 </html>
