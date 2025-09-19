@@ -1,94 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game & App Hub</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden; /* 🚫 Prevent scrollbars */
-      font-family: Arial, sans-serif;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-    header, nav {
-      background: #0077cc;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      background: #005fa3;
-    }
-    nav button {
-      background: #0077cc;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s;
-    }
-    nav button:hover {
-      background: #004f80;
-    }
-    iframe {
-      flex: 1;
-      width: 100%;
-      height: 100%; /* 🔒 Always fill viewport */
-      border: none;
-      display: none; /* hide until used */
-    }
-    .hidden {
-      display: none !important;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Game & App Hub — Single Page iframe</title>
+<style>
+  :root { --bar:#005fa3; --bar-2:#0077cc; --white:#fff; --glass: rgba(0,0,0,0.35); }
+  html,body{
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden; /* prevent parent-page scrolling */
+    font-family: Inter, Roboto, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* header/menu */
+  #topbar {
+    background: linear-gradient(90deg,var(--bar-2),var(--bar));
+    color:var(--white);
+    padding:10px 14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  #title { font-weight:700; font-size:16px; }
+  #menu { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .menu-btn {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.14);
+    color:var(--white);
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:transform .08s, background .12s;
+  }
+  .menu-btn:hover { transform:translateY(-1px); background: rgba(255,255,255,0.06); }
+
+  /* iframe area */
+  #frameWrap {
+    position:relative;
+    flex:1 1 auto;
+    height: calc(100% - 56px); /* accounts for topbar height */
+    width:100%;
+    background:black;
+  }
+  iframe#gameFrame {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    display:none; /* hidden until a game is loaded */
+    outline: none; /* remove focus ring */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* overlay controls when in-game */
+  .overlay {
+    position: fixed;
+    top:10px;
+    left:10px;
+    z-index:9999;
+    display:flex;
+    gap:8px;
+  }
+  .small-btn {
+    background: rgba(255,255,255,0.12);
+    color:white;
+    border:0;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    backdrop-filter: blur(4px);
+  }
+  .hint {
+    position: absolute;
+    left:50%;
+    top:12px;
+    transform:translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:13px;
+    display:none;
+  }
+
+  /* visible menu state that sits above iframe */
+  #menuContainer { display:flex; align-items:center; gap:10px; }
+
+  /* small "open in new tab" link style for accessibility fallback */
+  .link {
+    color: white;
+    text-decoration: underline;
+    font-weight:600;
+    background: none;
+    border: none;
+    cursor:pointer;
+    padding:6px 8px;
+  }
+
+  /* responsive */
+  @media (max-width:640px) {
+    #title { font-size:14px; }
+    .menu-btn { padding:7px 10px; font-size:14px; }
+  }
+</style>
 </head>
 <body>
-  <header id="header">Game & App Hub</header>
-  <nav id="menu">
-    <button onclick="loadGame('https://putman10.github.io/oregon-trail/')">Oregon Trail</button>
-    <button onclick="loadGame('https://bigjackson.github.io/Run3Source/')">Run 3</button>
-    <button onclick="loadGame('https://the-sawfish.github.io/chat1234567890/login.html')">Chat App</button>
-    <button onclick="loadGame('https://the-sawfish.github.io/call-app/')">Call App</button>
-    <button onclick="loadGame('https://clockmantellstime.github.io/unblocked/territorial.html')">Territorial</button>
-    <button onclick="loadGame('https://clockmantellstime.github.io/unblocked/slope.html')">Slope</button>
-  </nav>
-  <iframe id="gameFrame" src=""></iframe>
+  <div id="topbar">
+    <div id="title">Game & App Hub</div>
+    <div id="menuContainer">
+      <div id="menu">
+        <button class="menu-btn" data-url="https://putman10.github.io/oregon-trail/">Oregon Trail</button>
+        <button class="menu-btn" data-url="https://bigjackson.github.io/Run3Source/">Run 3</button>
+        <button class="menu-btn" data-url="https://the-sawfish.github.io/chat1234567890/login.html">Chat App</button>
+        <button class="menu-btn" data-url="https://the-sawfish.github.io/call-app/">Call App</button>
+        <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/territorial.html">Territorial</button>
+        <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/slope.html">Slope</button>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    function loadGame(url) {
-      const frame = document.getElementById('gameFrame');
-      frame.src = url;
-      frame.style.display = 'block';
-      document.getElementById('header').classList.add('hidden');
-      document.getElementById('menu').classList.add('hidden');
-      
-      // 🔑 Give iframe focus so keys work
-      frame.onload = () => frame.contentWindow.focus();
+  <div id="frameWrap">
+    <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
+    <iframe id="gameFrame" title="Game Frame" tabindex="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- overlay buttons shown when in-game -->
+  <div class="overlay" id="inGameOverlay" style="display:none;">
+    <button id="backBtn" class="small-btn" title="Back to menu (Esc)">Back</button>
+    <button id="openBtn" class="small-btn" title="Open in new tab">Open in new tab</button>
+  </div>
+
+<script>
+(function(){
+  const frame = document.getElementById('gameFrame');
+  const menu = document.getElementById('menu');
+  const topbar = document.getElementById('topbar');
+  const frameWrap = document.getElementById('frameWrap');
+  const overlay = document.getElementById('inGameOverlay');
+  const backBtn = document.getElementById('backBtn');
+  const openBtn = document.getElementById('openBtn');
+  const hint = document.getElementById('focusHint');
+
+  let currentURL = '';
+
+  // Make iframe focusable and remove outline when focused
+  frame.setAttribute('tabindex','0');
+  frame.style.outline = 'none';
+
+  // Load a game into the iframe and hide the topbar/menu.
+  function loadGame(url){
+    currentURL = url;
+    frame.src = url;
+    frame.style.display = 'block';
+    // hide topbar so iframe visually fills page
+    topbar.style.display = 'none';
+    overlay.style.display = 'flex';
+    // show hint briefly (many canvas games still need click to capture keys/pointer)
+    showHint();
+
+    // Give the iframe focus where permitted by the browser.
+    // Because load is a user-initiated action (clicking the menu button),
+    // browsers allow focus calls here.
+    frame.onload = function(){
+      try {
+        frame.focus();               // focus the iframe element (parent-side)
+        frame.contentWindow.focus(); // try to focus the iframe window (may be cross-origin allowed)
+      } catch(e){
+        /* ignore cross-origin access errors */
+      }
+    };
+
+    // small timeout to focus (double attempt helps on some browsers)
+    setTimeout(()=>{ try{ frame.focus(); frame.contentWindow.focus(); }catch(e){} }, 120);
+  }
+
+  // Show hint overlay for a short time
+  let hintTimer;
+  function showHint(){
+    hint.style.display = 'block';
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(()=> hint.style.display = 'none', 4500);
+  }
+
+  // Return to menu: clear src, hide frame and overlay, show topbar
+  function backToMenu(){
+    frame.src = 'about:blank';
+    frame.style.display = 'none';
+    overlay.style.display = 'none';
+    topbar.style.display = 'flex';
+    currentURL = '';
+  }
+
+  // Click handlers on topbar buttons
+  menu.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const url = btn.getAttribute('data-url');
+      // user gesture: load game then focus attempts will run
+      loadGame(url);
+    });
+  });
+
+  // Overlay buttons
+  backBtn.addEventListener('click', backToMenu);
+  openBtn.addEventListener('click', ()=> {
+    if (currentURL) window.open(currentURL, '_blank');
+  });
+
+  // If user clicks (or taps) on the iframe element area in the parent page, focus it.
+  // This handles the common case where clicking inside the iframe is required.
+  frame.addEventListener('pointerdown', () => {
+    try { frame.focus(); frame.contentWindow.focus(); } catch (e) {}
+  }, {passive:true});
+
+  // Global key handling:
+  // - Esc returns to menu
+  // - If the iframe is visible and not focused, we'll try to refocus on first relevant keypress.
+  document.addEventListener('keydown', (e) => {
+    if (!currentURL) return; // menu active
+
+    // Escape: go back
+    if (e.key === 'Escape') {
+      backToMenu();
+      return;
     }
 
-    // ⎋ ESC key to go back to menu
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        const frame = document.getElementById('gameFrame');
-        frame.src = "";
-        frame.style.display = "none";
-        document.getElementById('header').classList.remove('hidden');
-        document.getElementById('menu').classList.remove('hidden');
-      }
-    });
-  </script>
+    // If iframe visible but not focused, attempt to focus it on first meaningful game key
+    const gameKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d','W','A','S','D',' '];
+    if (gameKeys.includes(e.key)) {
+      // If frame is not focused, attempt to focus — this may allow the page to receive the next keypress.
+      // Some browsers require an actual click inside the iframe to capture keyboard events (security/pointer lock).
+      try {
+        const active = document.activeElement;
+        const frameIsActive = (active === frame);
+        if (!frameIsActive) {
+          frame.focus();
+          try { frame.contentWindow.focus(); } catch(e){}
+          // show a quick hint if still not focused telling the user to click inside the game
+          setTimeout(()=> {
+            // check again if still not focused
+            if (document.activeElement !== frame) showHint();
+          }, 80);
+        }
+      } catch(err){}
+    }
+  }, true);
+
+  // On page unload or when back to menu, clear focus / src
+  window.addEventListener('beforeunload', backToMenu);
+
+  // Accessibility: allow Enter to open first menu item quickly
+  // (This is optional and doesn't change keyboard capture behavior inside iframe)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !currentURL) {
+      const first = menu.querySelector('.menu-btn');
+      if (first) first.click();
+    }
+  });
+
+  // initial state: no iframe loaded
+  backToMenu();
+})();
+</script>
 </body>
 </html>
