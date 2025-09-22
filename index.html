@@ -201,5 +201,79 @@
   backToMenu();
 })();
 </script>
+  <script>
+// ---- SAVE/RESTORE PROGRESS ADDON ---- //
+(function(){
+  const frame = document.getElementById('gameFrame');
+  let currentGameKey = '';
+
+  // Helper: unique key for each game
+  function storageKey(url) {
+    return "gameSave_" + url;
+  }
+
+  // Try to save game state when leaving
+  function backupProgress() {
+    if (!currentGameKey) return;
+    try {
+      // Ask iframe for its localStorage data
+      const gameData = frame.contentWindow.localStorage;
+      if (gameData) {
+        const dump = {};
+        for (let i=0; i<gameData.length; i++) {
+          const k = gameData.key(i);
+          dump[k] = gameData.getItem(k);
+        }
+        localStorage.setItem(currentGameKey, JSON.stringify(dump));
+        console.log("Progress saved for", currentGameKey);
+      }
+    } catch (e) {
+      console.warn("Could not access iframe localStorage (cross-origin). Progress not saved.", e);
+    }
+  }
+
+  // Try to restore game state when loading
+  function restoreProgress(url) {
+    currentGameKey = storageKey(url);
+    const saved = localStorage.getItem(currentGameKey);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        const gameData = frame.contentWindow.localStorage;
+        if (gameData) {
+          for (const [k,v] of Object.entries(data)) {
+            gameData.setItem(k,v);
+          }
+          console.log("Progress restored for", currentGameKey);
+        }
+      } catch (e) {
+        console.warn("Could not restore progress:", e);
+      }
+    }
+  }
+
+  // Hook into existing loader/back function
+  const oldLoadGame = window.loadGame;
+  window.loadGame = function(url) {
+    oldLoadGame(url);
+    frame.onload = () => {
+      try {
+        frame.contentWindow.focus();
+        restoreProgress(url); // restore after load
+      } catch(e){}
+    };
+  };
+
+  const oldBack = window.backToMenu;
+  window.backToMenu = function() {
+    backupProgress(); // save before leaving
+    oldBack();
+  };
+
+  // Also backup on page unload
+  window.addEventListener("beforeunload", backupProgress);
+})();
+</script>
+
 </body>
 </html>
