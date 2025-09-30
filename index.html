@@ -51,10 +51,10 @@
     position:relative;
     flex:1 1 auto;
     width:100%;
-    background:black;
     display:flex;
     align-items:stretch;
     justify-content:center;
+    background:black;
   }
   iframe#gameFrame {
     flex:1 1 auto;
@@ -62,7 +62,8 @@
     height:100%;
     border:0;
     display:none;
-    outline: none;
+    outline:none;
+    z-index:10;
   }
 
   /* overlay controls when in-game */
@@ -93,6 +94,7 @@
     border-radius:8px;
     font-size:13px;
     display:none;
+    z-index:15;
   }
 
   /* ===== FULL PAGE FILLER WITH STACKED BANNERS ===== */
@@ -108,7 +110,7 @@
     justify-content:flex-start;
     background:black;
     overflow-y:auto;
-    z-index:1;
+    z-index:5;
     padding-top:20px;
     padding-bottom:20px;
   }
@@ -150,559 +152,9 @@
   </div>
 
   <div id="frameWrap">
-    <!-- FULL PAGE FILLER WITH MULTIPLE STACKED BANNERS -->
+    <!-- FULL PAGE FILLER WITH STACKED ADS -->
     <div id="pageFiller">
-      <div id="adWrap">
-        <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-        <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-        <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-        <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-                <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-                  <div class="ad-slot">
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'e0f1838a638a63f20b9c1251602fbec3',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
-        </div>
-        <!-- Add more div.ad-slot as needed to fill full page -->
-      </div>
+      <div id="adWrap"></div>
     </div>
 
     <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
@@ -714,6 +166,29 @@
   </div>
 
 <script>
+// ---- DYNAMIC MULTIPLE ADS ---- //
+const adWrap = document.getElementById('adWrap');
+// How many stacked banners we want
+const bannerCount = 20; // adjust as needed
+for(let i=0;i<bannerCount;i++){
+  const slot = document.createElement('div');
+  slot.className = 'ad-slot';
+  slot.innerHTML = `
+<script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>
+<script type="text/javascript">
+atOptions = {
+'key' : 'e0f1838a638a63f20b9c1251602fbec3',
+'format' : 'iframe',
+'height' : 60,
+'width' : 468,
+'params' : {}
+};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/e0f1838a638a63f20b9c1251602fbec3/invoke.js"></script>`;
+  adWrap.appendChild(slot);
+}
+
+// ---- GAME IFRAME & MENU LOGIC ---- //
 (function(){
   const frame = document.getElementById('gameFrame');
   const menu = document.getElementById('menu');
@@ -727,8 +202,7 @@
 
   frame.setAttribute('tabindex','0');
   frame.style.outline = 'none';
-  
-const pageFiller = document.getElementById('pageFiller');
+
   function loadGame(url){
     currentURL = url;
     frame.src = url;
@@ -795,9 +269,7 @@ const pageFiller = document.getElementById('pageFiller');
   window.addEventListener('beforeunload', backToMenu);
   backToMenu();
 })();
-</script>
 
-<script>
 // ---- SAVE/RESTORE PROGRESS ADDON ---- //
 (function(){
   const frame = document.getElementById('gameFrame');
@@ -864,6 +336,5 @@ const pageFiller = document.getElementById('pageFiller');
   window.addEventListener("beforeunload", backupProgress);
 })();
 </script>
-
 </body>
 </html>
