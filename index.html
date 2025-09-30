@@ -53,6 +53,8 @@
     width:100%;
     background:black;
     display:flex;
+    align-items:stretch;
+    justify-content:center;
   }
   iframe#gameFrame {
     flex:1 1 auto;
@@ -93,10 +95,42 @@
     display:none;
   }
 
+  /* ===== ADDED: full page filler wrapper ===== */
+  #pageFiller {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:black;
+    z-index:1;
+  }
+  #adWrap {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    max-width:90%;
+  }
+  #adWrap .ad-slot {
+    flex: 0 0 auto;
+    width:320px;
+    min-height:50px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
   @media (max-width:640px) {
     #title { font-size:14px; }
     .menu-btn { padding:7px 10px; font-size:14px; }
+    #adWrap .ad-slot { width:calc(100% - 24px); max-width:calc(100% - 24px); }
   }
+  /* ===================================================== */
 </style>
 </head>
 <body>
@@ -111,15 +145,24 @@
       <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/slope.html">Slope</button>
       <button class="menu-btn" data-url="https://duckmath.github.io">FEATURED: DuckMath</button>
       <button class="menu-btn" data-url="https://the-sawfish.github.io/chilibowlflash/index.html">More Games Here</button>
-        </div>
+    </div>
   </div>
 
   <div id="frameWrap">
+    <!-- FULL PAGE FILLER WITH ADS (shown before game loads) -->
+    <div id="pageFiller">
+      <div id="adWrap">
+        <div class="ad-slot">
+          <script async="async" data-cfasync="false" src="//pl27673631.revenuecpmgate.com/d4340154bc73718f92bac0614d8b370f/invoke.js"></script>
+          <div id="container-d4340154bc73718f92bac0614d8b370f"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
     <iframe id="gameFrame" title="Game Frame" tabindex="0" allowfullscreen></iframe>
   </div>
 
-  <!-- overlay buttons shown when in-game -->
   <div class="overlay" id="inGameOverlay" style="display:none;">
     <button id="backBtn" class="small-btn" title="Back to menu (Esc)">Back</button>
   </div>
@@ -132,6 +175,7 @@
   const overlay = document.getElementById('inGameOverlay');
   const backBtn = document.getElementById('backBtn');
   const hint = document.getElementById('focusHint');
+  const pageFiller = document.getElementById('pageFiller'); // new
 
   let currentURL = '';
 
@@ -142,6 +186,7 @@
     currentURL = url;
     frame.src = url;
     frame.style.display = 'block';
+    if(pageFiller) pageFiller.style.display = 'none'; // hide filler
     topbar.style.display = 'none';
     overlay.style.display = 'flex';
     showHint();
@@ -164,6 +209,7 @@
     frame.style.display = 'none';
     overlay.style.display = 'none';
     topbar.style.display = 'flex';
+    if(pageFiller) pageFiller.style.display = 'flex'; // show filler again
     currentURL = '';
   }
 
@@ -203,22 +249,20 @@
   backToMenu();
 })();
 </script>
-  <script>
+
+<script>
 // ---- SAVE/RESTORE PROGRESS ADDON ---- //
 (function(){
   const frame = document.getElementById('gameFrame');
   let currentGameKey = '';
 
-  // Helper: unique key for each game
   function storageKey(url) {
     return "gameSave_" + url;
   }
 
-  // Try to save game state when leaving
   function backupProgress() {
     if (!currentGameKey) return;
     try {
-      // Ask iframe for its localStorage data
       const gameData = frame.contentWindow.localStorage;
       if (gameData) {
         const dump = {};
@@ -234,7 +278,6 @@
     }
   }
 
-  // Try to restore game state when loading
   function restoreProgress(url) {
     currentGameKey = storageKey(url);
     const saved = localStorage.getItem(currentGameKey);
@@ -254,25 +297,23 @@
     }
   }
 
-  // Hook into existing loader/back function
   const oldLoadGame = window.loadGame;
   window.loadGame = function(url) {
     oldLoadGame(url);
     frame.onload = () => {
       try {
         frame.contentWindow.focus();
-        restoreProgress(url); // restore after load
+        restoreProgress(url);
       } catch(e){}
     };
   };
 
   const oldBack = window.backToMenu;
   window.backToMenu = function() {
-    backupProgress(); // save before leaving
+    backupProgress();
     oldBack();
   };
 
-  // Also backup on page unload
   window.addEventListener("beforeunload", backupProgress);
 })();
 </script>
