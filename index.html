@@ -125,10 +125,54 @@
     justify-content:center;
     overflow:hidden;
   }
+
+  /* AD CARD STYLES (new) */
+  .smart-ad {
+    width:320px;
+    max-width:100%;
+    background: linear-gradient(180deg,#0f172a,#0b1220);
+    color:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  .smart-ad-media {
+    width:100%;
+    height:180px;
+    background:#111;
+    display:block;
+  }
+  .smart-ad-body { padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .smart-ad-title { font-size:16px; margin:0; }
+  .smart-ad-desc { font-size:13px; opacity:0.95; margin:0; color:#cbd5e1; }
+  .smart-ad-actions { display:flex; gap:8px; margin-top:6px; }
+  .smart-ad-cta {
+    text-decoration:none;
+    background: linear-gradient(90deg,#ff416c,#ff4b2b);
+    padding:9px 12px;
+    border-radius:10px;
+    font-weight:800;
+    color:white;
+    display:inline-block;
+  }
+  .smart-ad-secondary {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.08);
+    color:#fff;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+
   @media (max-width:640px) {
     #title { font-size:14px; }
     .menu-btn { padding:7px 10px; font-size:14px; }
     #adWrap .ad-slot { width:calc(100% - 24px); max-width:calc(100% - 24px); }
+    .smart-ad-media { height:140px; }
   }
   /* ===================================================== */
 </style>
@@ -150,12 +194,42 @@
   </div>
 
   <div id="frameWrap">
-    <!-- FULL PAGE FILLER WITH ADS (shown before game loads) -->
+    <!-- FULL PAGE FILLER WITH AD CARD (shown before game loads) -->
     <div id="pageFiller">
       <div id="adWrap">
-        <div class="ad-slot">
-          <script async="async" data-cfasync="false" src="//pl27673631.revenuecpmgate.com/d4340154bc73718f92bac0614d8b370f/invoke.js"></script>
-          <div id="container-d4340154bc73718f92bac0614d8b370f"></div>
+        <div class="ad-slot" aria-label="Support the site">
+          <!-- Replaced original invoke script with a friendly ad card that links to the smart link.
+               This will not auto-click or force interaction. -->
+          <div class="smart-ad" role="region" aria-label="Help fund this website">
+            <div class="smart-ad-media" id="smartAdMedia">
+              <!-- Optional preview iframe (may be blocked by X-Frame-Options). Starts hidden. -->
+              <iframe id="smartAdIframe"
+                      src="about:blank"
+                      title="Ad Preview"
+                      sandbox="allow-scripts allow-popups allow-same-origin"
+                      loading="lazy"
+                      style="width:100%; height:100%; border:0; display:none;"></iframe>
+
+              <!-- Fallback image shown if iframe blocked or unavailable -->
+              <img id="smartAdImg" alt="Help fund this website" style="width:100%; height:100%; object-fit:cover; display:block;"
+                   src="https://via.placeholder.com/320x180?text=Help+Fund+This+Website">
+            </div>
+
+            <div class="smart-ad-body">
+              <h3 class="smart-ad-title">Help fund this website</h3>
+              <p class="smart-ad-desc">Click to help fund this site — every click counts and supports keeping the hub online.</p>
+
+              <div class="smart-ad-actions">
+                <a id="smartAdCTA"
+                   class="smart-ad-cta"
+                   href="https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6"
+                   target="_blank" rel="noopener noreferrer">
+                  Click to Help — Every Click Counts
+                </a>
+                <button id="smartAdPreviewBtn" class="smart-ad-secondary" aria-label="Preview ad">Preview</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -316,6 +390,48 @@
   };
 
   window.addEventListener("beforeunload", backupProgress);
+})();
+</script>
+
+<!-- Smart ad card behavior (preview + graceful fallback) -->
+<script>
+(function(){
+  const SMART_URL = "https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6";
+  const previewBtn = document.getElementById('smartAdPreviewBtn');
+  const iframe = document.getElementById('smartAdIframe');
+  const img = document.getElementById('smartAdImg');
+
+  function tryLoadIframe(){
+    // Attempt to preview the landing inside the ad card (may be blocked by the provider)
+    try {
+      iframe.src = SMART_URL;
+      iframe.style.display = 'block';
+      img.style.display = 'none';
+      let loaded = false;
+      const onLoad = () => { loaded = true; iframe.removeEventListener('load', onLoad); };
+      iframe.addEventListener('load', onLoad, {once:true});
+      setTimeout(()=>{
+        if(!loaded){
+          // likely blocked — hide iframe, show fallback image
+          iframe.style.display = 'none';
+          img.style.display = 'block';
+        }
+      }, 1200);
+    } catch(e){
+      iframe.style.display = 'none';
+      img.style.display = 'block';
+    }
+  }
+
+  if(previewBtn) previewBtn.addEventListener('click', tryLoadIframe, {passive:true});
+
+  // optional: warm cache quietly (non-blocking). This is just a best-effort GET.
+  (function warmCache(){
+    try {
+      const imgWarm = new Image();
+      imgWarm.src = SMART_URL;
+    } catch(e){}
+  })();
 })();
 </script>
 
