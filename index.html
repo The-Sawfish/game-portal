@@ -174,7 +174,6 @@
     #adWrap .ad-slot { width:calc(100% - 24px); max-width:calc(100% - 24px); }
     .smart-ad-media { height:140px; }
   }
-  /* ===================================================== */
 </style>
 </head>
 <body>
@@ -199,19 +198,14 @@
     <div id="pageFiller">
       <div id="adWrap">
         <div class="ad-slot" aria-label="Support the site">
-          <!-- Replaced original invoke script with a friendly ad card that links to the smart link.
-               This will not auto-click or force interaction. -->
           <div class="smart-ad" role="region" aria-label="Help fund this website">
             <div class="smart-ad-media" id="smartAdMedia">
-              <!-- Optional preview iframe (may be blocked by X-Frame-Options). Starts hidden. -->
               <iframe id="smartAdIframe"
                       src="about:blank"
                       title="Ad Preview"
                       sandbox="allow-scripts allow-popups allow-same-origin"
                       loading="lazy"
                       style="width:100%; height:100%; border:0; display:none;"></iframe>
-
-              <!-- Fallback image shown if iframe blocked or unavailable -->
               <img id="smartAdImg" alt="Help fund this website" style="width:100%; height:100%; object-fit:cover; display:block;"
                    src="https://via.placeholder.com/320x180?text=Help+Fund+This+Website">
             </div>
@@ -232,6 +226,19 @@
             </div>
           </div>
         </div>
+
+        <!-- ===== NEW: SAFARI-FRIENDLY SMARTLINK BANNER ===== -->
+        <div class="ad-slot">
+          <iframe
+            src="//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js"
+            style="width:320px; height:50px; border:0; overflow:hidden;"
+            scrolling="no"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            title="Smartlink Banner"
+            loading="lazy">
+          </iframe>
+        </div>
+
       </div>
     </div>
 
@@ -244,6 +251,7 @@
   </div>
 
 <script>
+// ===== MAIN GAME LOADER =====
 (function(){
   const frame = document.getElementById('gameFrame');
   const menu = document.getElementById('menu');
@@ -251,7 +259,7 @@
   const overlay = document.getElementById('inGameOverlay');
   const backBtn = document.getElementById('backBtn');
   const hint = document.getElementById('focusHint');
-  const pageFiller = document.getElementById('pageFiller'); // new
+  const pageFiller = document.getElementById('pageFiller');
 
   let currentURL = '';
 
@@ -262,7 +270,7 @@
     currentURL = url;
     frame.src = url;
     frame.style.display = 'block';
-    if(pageFiller) pageFiller.style.display = 'none'; // hide filler
+    if(pageFiller) pageFiller.style.display = 'none';
     topbar.style.display = 'none';
     overlay.style.display = 'flex';
     showHint();
@@ -285,14 +293,12 @@
     frame.style.display = 'none';
     overlay.style.display = 'none';
     topbar.style.display = 'flex';
-    if(pageFiller) pageFiller.style.display = 'flex'; // show filler again
+    if(pageFiller) pageFiller.style.display = 'flex';
     currentURL = '';
   }
 
   menu.querySelectorAll('.menu-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      loadGame(btn.getAttribute('data-url'));
-    });
+    btn.addEventListener('click', () => { loadGame(btn.getAttribute('data-url')); });
   });
 
   backBtn.addEventListener('click', backToMenu);
@@ -303,19 +309,14 @@
 
   document.addEventListener('keydown', (e) => {
     if (!currentURL) return;
-    if (e.key === 'Escape') {
-      backToMenu();
-      return;
-    }
+    if (e.key === 'Escape') { backToMenu(); return; }
     const gameKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d','W','A','S','D',' '];
     if (gameKeys.includes(e.key)) {
       try {
         if (document.activeElement !== frame) {
           frame.focus();
           try { frame.contentWindow.focus(); } catch(e){}
-          setTimeout(()=> {
-            if (document.activeElement !== frame) showHint();
-          }, 80);
+          setTimeout(()=> { if (document.activeElement !== frame) showHint(); }, 80);
         }
       } catch(err){}
     }
@@ -327,14 +328,12 @@
 </script>
 
 <script>
-// ---- SAVE/RESTORE PROGRESS ADDON ---- //
+// ---- SAVE/RESTORE PROGRESS ----
 (function(){
   const frame = document.getElementById('gameFrame');
   let currentGameKey = '';
 
-  function storageKey(url) {
-    return "gameSave_" + url;
-  }
+  function storageKey(url) { return "gameSave_" + url; }
 
   function backupProgress() {
     if (!currentGameKey) return;
@@ -347,11 +346,8 @@
           dump[k] = gameData.getItem(k);
         }
         localStorage.setItem(currentGameKey, JSON.stringify(dump));
-        console.log("Progress saved for", currentGameKey);
       }
-    } catch (e) {
-      console.warn("Could not access iframe localStorage (cross-origin). Progress not saved.", e);
-    }
+    } catch (e) {}
   }
 
   function restoreProgress(url) {
@@ -365,23 +361,15 @@
           for (const [k,v] of Object.entries(data)) {
             gameData.setItem(k,v);
           }
-          console.log("Progress restored for", currentGameKey);
         }
-      } catch (e) {
-        console.warn("Could not restore progress:", e);
-      }
+      } catch (e) {}
     }
   }
 
   const oldLoadGame = window.loadGame;
   window.loadGame = function(url) {
     oldLoadGame(url);
-    frame.onload = () => {
-      try {
-        frame.contentWindow.focus();
-        restoreProgress(url);
-      } catch(e){}
-    };
+    frame.onload = () => { try{ restoreProgress(url); }catch(e){} };
   };
 
   const oldBack = window.backToMenu;
@@ -394,8 +382,8 @@
 })();
 </script>
 
-<!-- Smart ad card behavior (preview + graceful fallback) -->
 <script>
+// ---- SMART AD CARD ----
 (function(){
   const SMART_URL = "https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6";
   const previewBtn = document.getElementById('smartAdPreviewBtn');
@@ -403,7 +391,6 @@
   const img = document.getElementById('smartAdImg');
 
   function tryLoadIframe(){
-    // Attempt to preview the landing inside the ad card (may be blocked by the provider)
     try {
       iframe.src = SMART_URL;
       iframe.style.display = 'block';
@@ -413,7 +400,6 @@
       iframe.addEventListener('load', onLoad, {once:true});
       setTimeout(()=>{
         if(!loaded){
-          // likely blocked — hide iframe, show fallback image
           iframe.style.display = 'none';
           img.style.display = 'block';
         }
@@ -426,18 +412,11 @@
 
   if(previewBtn) previewBtn.addEventListener('click', tryLoadIframe, {passive:true});
 
-  // optional: warm cache quietly (non-blocking). This is just a best-effort GET.
   (function warmCache(){
-    try {
-      const imgWarm = new Image();
-      imgWarm.src = SMART_URL;
-    } catch(e){}
+    try { new Image().src = SMART_URL; } catch(e){}
   })();
 })();
 </script>
 
-    <!-- Pop-under script -->
-  <script type="text/javascript" src="//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js"></script>
 </body>
 </html>
-
