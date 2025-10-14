@@ -1,50 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867445282503845"
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867445282503845"
      crossorigin="anonymous"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #c9d1d9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      flex-direction: column;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-    .button {
-      background: #58a6ff;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-    .button:hover {
-      background: #1f6feb;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Game Portal</title>
+<style>
+  :root { --bar:#005fa3; --bar-2:#0077cc; --white:#fff; }
+  html,body{
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden; /* prevent parent-page scrolling */
+    font-family: Inter, Roboto, Arial, sans-serif;
+  }
+
+  body {
+    display:flex;
+    flex-direction:column;
+    height:100vh; /* full viewport height */
+  }
+
+  /* header/menu */
+  #topbar {
+    background: linear-gradient(90deg,var(--bar-2),var(--bar));
+    color:var(--white);
+    padding:10px 14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    flex-shrink:0; /* don’t shrink */
+  }
+  #title { font-weight:700; font-size:16px; }
+  #menu { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .menu-btn {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.14);
+    color:var(--white);
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:transform .08s, background .12s;
+  }
+  .menu-btn:hover { transform:translateY(-1px); background: rgba(255,255,255,0.06); }
+
+  /* iframe area */
+  #frameWrap {
+    position:relative;
+    flex:1 1 auto; /* take all remaining space */
+    width:100%;
+    background:black;
+    display:flex;
+    align-items:stretch;
+    justify-content:center;
+  }
+  iframe#gameFrame {
+    flex:1 1 auto;
+    width:100%;
+    height:100%;
+    border:0;
+    display:none; /* hidden until a game is loaded */
+    outline: none;
+  }
+
+  /* overlay controls when in-game */
+  .overlay {
+    position: fixed;
+    top:10px;
+    left:10px;
+    z-index:9999;
+  }
+  .small-btn {
+    background: rgba(255,255,255,0.12);
+    color:white;
+    border:0;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    backdrop-filter: blur(4px);
+  }
+  .hint {
+    position: absolute;
+    left:50%;
+    top:12px;
+    transform:translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:13px;
+    display:none;
+  }
+
+  /* ===== ADDED: full page filler wrapper ===== */
+  #pageFiller {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:black;
+    z-index:1;
+  }
+  #adWrap {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    max-width:90%;
+  }
+  #adWrap .ad-slot {
+    flex: 0 0 auto;
+    width:320px;
+    min-height:50px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  /* AD CARD STYLES (new) */
+  .smart-ad {
+    width:320px;
+    max-width:100%;
+    background: linear-gradient(180deg,#0f172a,#0b1220);
+    color:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  .smart-ad-media {
+    width:100%;
+    height:180px;
+    background:#111;
+    display:block;
+  }
+  .smart-ad-body { padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .smart-ad-title { font-size:16px; margin:0; }
+  .smart-ad-desc { font-size:13px; opacity:0.95; margin:0; color:#cbd5e1; }
+  .smart-ad-actions { display:flex; gap:8px; margin-top:6px; }
+  .smart-ad-cta {
+    text-decoration:none;
+    background: linear-gradient(90deg,#ff416c,#ff4b2b);
+    padding:9px 12px;
+    border-radius:10px;
+    font-weight:800;
+    color:white;
+    display:inline-block;
+  }
+  .smart-ad-secondary {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.08);
+    color:#fff;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+
+  @media (max-width:640px) {
+    #title { font-size:14px; }
+    .menu-btn { padding:7px 10px; font-size:14px; }
+    #adWrap .ad-slot { width:calc(100% - 24px); max-width:calc(100% - 24px); }
+    .smart-ad-media { height:140px; }
+  }
+</style>
 </head>
 <body>
-  <h1>This Page No Longer Exists. However, There Is A Replica At This Link.</h1>
-  <p>The Domain Was Changed To a More Memorable Name. Thank You For Your Support.</p>
-  <a href="https://coolmathgamesv2.github.io/" class="button">Go to Game Portal</a>
+  <div id="topbar">
+    <div id="title">Game & App Hub</div>
+    <div id="menu">
+      <button class="menu-btn" data-url="https://bigjackson.github.io/Run3Source/">Run 3 (To Save Progress: https://the-sawfish.github.io/Run3Final/)</button>
+      <button class="menu-btn" data-url="https://the-sawfish.github.io/chat1234567890/login.html">Chat App</button>
+      <button class="menu-btn" data-url="https://the-sawfish.github.io/call-app/">Call App</button>
+      <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/territorial.html">Territorial</button>
+      <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/slope.html">Slope</button>
+      <button class="menu-btn" data-url="https://duckmath.github.io">FEATURED: DuckMath</button>
+      <button class="menu-btn" data-url="https://the-sawfish.github.io/chilibowlflash/index.html">More Games</button>
+      <button class="menu-btn" data-url="https://the-sawfish.github.io/game-portal/">If You Cannot See the Games Use Two Fingers and Scroll Down. If the Back Button Does not Show, Click in the Top Left Corner. Click to Reload the Page</button>
+      <button class="menu-btn" data-url="https://jimeneutron.github.io/Game/">Jim's BackUp</button>
+      <button class="menu-btn" data-url="https://coding-horror.github.io/basic-computer-games/">For Those Who Like Old Compuper Games</button>
+    </div>
+  </div>
+
+  <div id="frameWrap">
+    <!-- FULL PAGE FILLER WITH AD CARD (shown before game loads) -->
+    <div id="pageFiller">
+      <div id="adWrap">
+        <div class="ad-slot" aria-label="Support the site">
+          <div class="smart-ad" role="region" aria-label="Help fund this website">
+            <div class="smart-ad-media" id="smartAdMedia">
+              <iframe id="smartAdIframe"
+                      src="about:blank"
+                      title="Ad Preview"
+                      sandbox="allow-scripts allow-popups allow-same-origin"
+                      loading="lazy"
+                      style="width:100%; height:100%; border:0; display:none;"></iframe>
+              <img id="smartAdImg" alt="Help fund this website" style="width:100%; height:100%; object-fit:cover; display:block;"
+                   src="https://via.placeholder.com/320x180?text=Help+Fund+This+Website">
+            </div>
+
+            <div class="smart-ad-body">
+              <h3 class="smart-ad-title">Help fund this website</h3>
+              <p class="smart-ad-desc">Click to help fund this site — every click counts and supports keeping the hub online.</p>
+
+              <div class="smart-ad-actions">
+                <a id="smartAdCTA"
+                   class="smart-ad-cta"
+                   href="https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6"
+                   target="_blank" rel="noopener noreferrer">
+                  Click to Help — Every Click Counts. Ads That Say You Have a Virus are FALSE!!!
+                </a>
+                <button id="smartAdPreviewBtn" class="smart-ad-secondary" aria-label="Preview ad">Preview</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== NEW: SAFARI-FRIENDLY SMARTLINK BANNER ===== -->
+        <div class="ad-slot">
+          <iframe
+            src="//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js"
+            style="width:320px; height:50px; border:0; overflow:hidden;"
+            scrolling="no"
+            sandbox="allow-scripts allow-same-origin allow-popups"
+            title="Smartlink Banner"
+            loading="lazy">
+          </iframe>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
+    <iframe id="gameFrame" title="Game Frame" tabindex="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="overlay" id="inGameOverlay" style="display:none;">
+    <button id="backBtn" class="small-btn" title="Back to menu (Esc)">Back</button>
+  </div>
+
+<script>
+// ===== MAIN GAME LOADER =====
+(function(){
+  const frame = document.getElementById('gameFrame');
+  const menu = document.getElementById('menu');
+  const topbar = document.getElementById('topbar');
+  const overlay = document.getElementById('inGameOverlay');
+  const backBtn = document.getElementById('backBtn');
+  const hint = document.getElementById('focusHint');
+  const pageFiller = document.getElementById('pageFiller');
+
+  let currentURL = '';
+
+  frame.setAttribute('tabindex','0');
+  frame.style.outline = 'none';
+
+  function loadGame(url){
+    currentURL = url;
+    frame.src = url;
+    frame.style.display = 'block';
+    if(pageFiller) pageFiller.style.display = 'none';
+    topbar.style.display = 'none';
+    overlay.style.display = 'flex';
+    showHint();
+
+    frame.onload = function(){
+      try { frame.focus(); frame.contentWindow.focus(); } catch(e){}
+    };
+    setTimeout(()=>{ try{ frame.focus(); frame.contentWindow.focus(); }catch(e){} }, 120);
+  }
+
+  let hintTimer;
+  function showHint(){
+    hint.style.display = 'block';
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(()=> hint.style.display = 'none', 4500);
+  }
+
+  function backToMenu(){
+    frame.src = 'about:blank';
+    frame.style.display = 'none';
+    overlay.style.display = 'none';
+    topbar.style.display = 'flex';
+    if(pageFiller) pageFiller.style.display = 'flex';
+    currentURL = '';
+  }
+
+  menu.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', () => { loadGame(btn.getAttribute('data-url')); });
+  });
+
+  backBtn.addEventListener('click', backToMenu);
+
+  frame.addEventListener('pointerdown', () => {
+    try { frame.focus(); frame.contentWindow.focus(); } catch (e) {}
+  }, {passive:true});
+
+  document.addEventListener('keydown', (e) => {
+    if (!currentURL) return;
+    if (e.key === 'Escape') { backToMenu(); return; }
+    const gameKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d','W','A','S','D',' '];
+    if (gameKeys.includes(e.key)) {
+      try {
+        if (document.activeElement !== frame) {
+          frame.focus();
+          try { frame.contentWindow.focus(); } catch(e){}
+          setTimeout(()=> { if (document.activeElement !== frame) showHint(); }, 80);
+        }
+      } catch(err){}
+    }
+  }, true);
+
+  window.addEventListener('beforeunload', backToMenu);
+  backToMenu();
+})();
+</script>
+
+<script>
+// ---- SAVE/RESTORE PROGRESS ----
+(function(){
+  const frame = document.getElementById('gameFrame');
+  let currentGameKey = '';
+
+  function storageKey(url) { return "gameSave_" + url; }
+
+  function backupProgress() {
+    if (!currentGameKey) return;
+    try {
+      const gameData = frame.contentWindow.localStorage;
+      if (gameData) {
+        const dump = {};
+        for (let i=0; i<gameData.length; i++) {
+          const k = gameData.key(i);
+          dump[k] = gameData.getItem(k);
+        }
+        localStorage.setItem(currentGameKey, JSON.stringify(dump));
+      }
+    } catch (e) {}
+  }
+
+  function restoreProgress(url) {
+    currentGameKey = storageKey(url);
+    const saved = localStorage.getItem(currentGameKey);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        const gameData = frame.contentWindow.localStorage;
+        if (gameData) {
+          for (const [k,v] of Object.entries(data)) {
+            gameData.setItem(k,v);
+          }
+        }
+      } catch (e) {}
+    }
+  }
+
+  const oldLoadGame = window.loadGame;
+  window.loadGame = function(url) {
+    oldLoadGame(url);
+    frame.onload = () => { try{ restoreProgress(url); }catch(e){} };
+  };
+
+  const oldBack = window.backToMenu;
+  window.backToMenu = function() {
+    backupProgress();
+    oldBack();
+  };
+
+  window.addEventListener("beforeunload", backupProgress);
+})();
+</script>
+
+<script>
+// ---- SMART AD CARD ----
+(function(){
+  const SMART_URL = "https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6";
+  const previewBtn = document.getElementById('smartAdPreviewBtn');
+  const iframe = document.getElementById('smartAdIframe');
+  const img = document.getElementById('smartAdImg');
+
+  function tryLoadIframe(){
+    try {
+      iframe.src = SMART_URL;
+      iframe.style.display = 'block';
+      img.style.display = 'none';
+      let loaded = false;
+      const onLoad = () => { loaded = true; iframe.removeEventListener('load', onLoad); };
+      iframe.addEventListener('load', onLoad, {once:true});
+      setTimeout(()=>{
+        if(!loaded){
+          iframe.style.display = 'none';
+          img.style.display = 'block';
+        }
+      }, 1200);
+    } catch(e){
+      iframe.style.display = 'none';
+      img.style.display = 'block';
+    }
+  }
+
+  if(previewBtn) previewBtn.addEventListener('click', tryLoadIframe, {passive:true});
+
+  (function warmCache(){
+    try { new Image().src = SMART_URL; } catch(e){}
+  })();
+})();
+</script>
+
 </body>
 </html>
