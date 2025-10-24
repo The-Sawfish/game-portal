@@ -7,273 +7,1149 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Game Portal</title>
 <style>
-  :root { --bar:#005fa3; --bar-2:#0077cc; --white:#fff; }
-  html,body{
-    height:100%;
-    width:100%;
-    margin:0;
-    padding:0;
-    overflow:hidden; /* prevent parent-page scrolling */
-    font-family: Inter, Roboto, Arial, sans-serif;
+  :root { 
+    --primary: #1e293b;
+    --primary-light: #334155;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --dark: #0f172a;
+    --darker: #020617;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #cbd5e1;
+    --white: #ffffff;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+    color: var(--white);
+    overflow: hidden;
   }
 
   body {
-    display:flex;
-    flex-direction:column;
-    height:100vh; /* full viewport height */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
   }
 
-  /* header/menu */
-  #topbar {
-    background: linear-gradient(90deg,var(--bar-2),var(--bar));
-    color:var(--white);
-    padding:10px 14px;
-    display:flex;
-    gap:12px;
-    align-items:center;
-    justify-content:space-between;
-    flex-shrink:0; /* don’t shrink */
+  /* Header */
+  .header {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px 24px;
+    flex-shrink: 0;
+    z-index: 1000;
   }
-  #title { font-weight:700; font-size:16px; }
-  #menu { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .menu-btn {
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.14);
-    color:var(--white);
-    padding:8px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
-    transition:transform .08s, background .12s;
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-  .menu-btn:hover { transform:translateY(-1px); background: rgba(255,255,255,0.06); }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--success));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+  }
+  
+  .logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--success));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--gray-light);
+  }
+  
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
 
-  /* iframe area */
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Games Grid */
+  .games-section {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray) transparent;
+  }
+  
+  .games-section::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .games-section::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .games-section::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 3px;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--white), var(--gray-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .section-subtitle {
+    color: var(--gray-light);
+    font-size: 16px;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .game-card {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent);
+  }
+  
+  .game-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .game-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .game-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  
+  .game-icon.popular { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+  .game-icon.new { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+  .game-icon.classic { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .game-icon.puzzle { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .game-icon.action { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .game-icon.arcade { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .game-icon.special { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .game-icon.app { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+  .game-icon.recommended { background: linear-gradient(135deg, #d299c2, #fef9d7); }
+  .game-icon.community { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+  .game-icon.backup { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+  .game-icon.retro { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+  .game-icon.tools { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+  .game-icon.browser { background: linear-gradient(135deg, #fad0c4, #ffd1ff); }
+  .game-icon.contact { background: linear-gradient(135deg, #ffb3ba, #ffdfba); }
+  
+  .game-info {
+    flex: 1;
+  }
+  
+  .game-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--white);
+  }
+  
+  .game-category {
+    font-size: 12px;
+    color: var(--gray-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .game-description {
+    color: var(--gray-light);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  
+  .game-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .game-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .status-badge.online {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+  }
+  
+  .status-badge.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+  }
+  
+  .status-badge.offline {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+  }
+  
+  .play-button {
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .play-button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Iframe Area */
   #frameWrap {
-    position:relative;
-    flex:1 1 auto; /* take all remaining space */
-    width:100%;
-    background:black;
-    display:flex;
-    align-items:stretch;
-    justify-content:center;
+    position: relative;
+    flex: 1;
+    width: 100%;
+    background: var(--darker);
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
   }
+  
   iframe#gameFrame {
-    flex:1 1 auto;
-    width:100%;
-    height:100%;
-    border:0;
-    display:none; /* hidden until a game is loaded */
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: none;
     outline: none;
   }
 
-  /* overlay controls when in-game */
+  /* Overlay Controls */
   .overlay {
     position: fixed;
-    top:10px;
-    left:10px;
-    z-index:9999;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
   }
+  
   .small-btn {
-    background: rgba(255,255,255,0.12);
-    color:white;
-    border:0;
-    padding:8px 10px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
-    backdrop-filter: blur(4px);
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
   }
+  
+  .small-btn:hover {
+    background: rgba(30, 41, 59, 1);
+    transform: translateY(-1px);
+  }
+  
   .hint {
     position: absolute;
-    left:50%;
-    top:12px;
-    transform:translateX(-50%);
-    background: rgba(0,0,0,0.5);
-    color:white;
-    padding:6px 10px;
-    border-radius:8px;
-    font-size:13px;
-    display:none;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-lg);
   }
 
-  /* ===== ADDED: full page filler wrapper ===== */
+  /* Page Filler with Ad */
   #pageFiller {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:black;
-    z-index:1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+    z-index: 1;
+    padding: 40px 20px;
   }
+  
   #adWrap {
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items:center;
-    max-width:90%;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%;
   }
+  
   #adWrap .ad-slot {
     flex: 0 0 auto;
-    width:320px;
-    min-height:50px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
+    width: 320px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
 
-  /* AD CARD STYLES (new) */
+  /* Enhanced Ad Card Styles */
   .smart-ad {
-    width:320px;
-    max-width:100%;
-    background: linear-gradient(180deg,#0f172a,#0b1220);
-    color:#fff;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+    width: 320px;
+    max-width: 100%;
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(20px);
+    color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
   .smart-ad-media {
-    width:100%;
-    height:180px;
-    background:#111;
-    display:block;
+    width: 100%;
+    height: 180px;
+    background: var(--primary);
+    display: block;
+    position: relative;
   }
-  .smart-ad-body { padding:12px; display:flex; flex-direction:column; gap:8px; }
-  .smart-ad-title { font-size:16px; margin:0; }
-  .smart-ad-desc { font-size:13px; opacity:0.95; margin:0; color:#cbd5e1; }
-  .smart-ad-actions { display:flex; gap:8px; margin-top:6px; }
+  
+  .smart-ad-body { 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+  }
+  
+  .smart-ad-title { 
+    font-size: 18px; 
+    font-weight: 700;
+    margin: 0; 
+    background: linear-gradient(135deg, #fff, var(--gray-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .smart-ad-desc { 
+    font-size: 14px; 
+    opacity: 0.95; 
+    margin: 0; 
+    color: var(--gray-light); 
+    line-height: 1.5;
+  }
+  
+  .smart-ad-actions { 
+    display: flex; 
+    gap: 12px; 
+    margin-top: 8px; 
+  }
+  
   .smart-ad-cta {
-    text-decoration:none;
-    background: linear-gradient(90deg,#ff416c,#ff4b2b);
-    padding:9px 12px;
-    border-radius:10px;
-    font-weight:800;
-    color:white;
-    display:inline-block;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    flex: 1;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
   }
+  
+  .smart-ad-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
   .smart-ad-secondary {
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.08);
-    color:#fff;
-    padding:8px 10px;
-    border-radius:8px;
-    cursor:pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .smart-ad-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 
-  @media (max-width:640px) {
-    #title { font-size:14px; }
-    .menu-btn { padding:7px 10px; font-size:14px; }
-    #adWrap .ad-slot { width:calc(100% - 24px); max-width:calc(100% - 24px); }
-    .smart-ad-media { height:140px; }
+  /* Loading Animation */
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .games-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      padding: 12px 16px;
+    }
+    
+    .header-content {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+    
+    .logo-text {
+      font-size: 20px;
+    }
+    
+    .games-section {
+      padding: 16px;
+    }
+    
+    .section-title {
+      font-size: 24px;
+    }
+    
+    .games-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    
+    .game-card {
+      padding: 16px;
+    }
+    
+    .game-card-header {
+      gap: 12px;
+    }
+    
+    .game-icon {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+    }
+    
+    .game-title {
+      font-size: 16px;
+    }
+    
+    #adWrap .ad-slot {
+      width: calc(100% - 24px);
+      max-width: calc(100% - 24px);
+    }
+    
+    .smart-ad-media {
+      height: 140px;
+    }
+    
+    .smart-ad-actions {
+      flex-direction: column;
+    }
+    
+    .overlay {
+      top: 10px;
+      left: 10px;
+    }
+    
+    .small-btn {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .games-section {
+      padding: 12px;
+    }
+    
+    .game-card {
+      padding: 12px;
+    }
+    
+    .smart-ad {
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .header-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  /* Hide games grid when iframe is active */
+  .games-section.hidden {
+    display: none;
   }
 </style>
 </head>
 <body>
-  <div id="topbar">
-    <div id="title">Game & App Hub</div>
-    <div id="menu">
-      <button class="menu-btn" data-url="https://bigjackson.github.io/Run3Source/">Run 3 (To Save Progress: https://the-sawfish.github.io/Run3Final/)</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/chat1234567890/login.html">Chat App - This is Temporarily Down</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/call-app/">Call App</button>
-      <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/territorial.html">Territorial</button>
-      <button class="menu-btn" data-url="https://clockmantellstime.github.io/unblocked/slope.html">Slope</button>
-      <button class="menu-btn" data-url="https://duckmath.github.io">DuckMath</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/chilibowlflash/index.html">More Games</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/game-portal/">If You Cannot See the Games Use Two Fingers and Scroll Down. If the Back Button Does not Show, Click in the Top Left Corner. Click to Reload the Page</button>
-      <button class="menu-btn" data-url="https://jimeneutron.github.io/Game/">Jim's BackUp</button>
-      <button class="menu-btn" data-url="https://coding-horror.github.io/basic-computer-games/">For Those Who Like Old Compuper Games</button>
-      <button class="menu-btn" data-url="https://sites.google.com/reverestudent.org/game-portal/home">Backup Site Number 2 - URL: https://sites.google.com/reverestudent.org/game-portal/home</button>
-      <button class="menu-btn" data-url="https://fletcherism.github.io/">Official Page of Fletcherism</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/VihaanPresentation/">WORKING: VIHAAN RECORDING ON NOW!</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/Contact/">Working Contact Us</button>
-      <button class="menu-btn" data-url="https://tommalbran.github.io/games/">More Retro Games</button>
-      <button class="menu-btn" data-url="https://hyperrushnet.github.io">Additional Games</button>
-      <button class="menu-btn" data-url="https://symmetrical-fiesta-v6p6v5j6xpr62xg6v-4173.app.github.dev">Sometimes May Be Down But Has a Lot of Games - If Doesn't Load Go to Link on the Bottem of the Access Page</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/BCHS-Unblocked-Games/home.html">Contains Tons of Games and Cloaking</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/BrowserRecommendations/">Recommendations for Unblocked Browser</button>
-      <button class="menu-btn" data-url="https://obscure-space-goldfish-v6jw6gv5p9g72wr44-3000.app.github.dev/">Public Unblocked Browser - Highly Advised to Go to Browser Recommendations - By Using This Website You Agree to the Terms and Policies</button>
-      <button class="menu-btn" data-url="https://the-sawfish.github.io/Terms/">Terms and Policies</button>
-      <button class="menu-btn" data-url="https://theburritoedition.com/">You Know: More Games</button>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">🎮</div>
+        <div class="logo-text">Game & App Hub</div>
+      </div>
+      <div class="header-actions">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>Online</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="frameWrap">
-    <!-- FULL PAGE FILLER WITH AD CARD (shown before game loads) -->
-    <div id="pageFiller">
-      <div id="adWrap">
-        <div class="ad-slot" aria-label="Support the site">
-          <div class="smart-ad" role="region" aria-label="Help fund this website">
-            <div class="smart-ad-media" id="smartAdMedia">
-              <iframe id="smartAdIframe"
-                      src="about:blank"
-                      title="Ad Preview"
-                      sandbox="allow-scripts allow-popups allow-same-origin"
-                      loading="lazy"
-                      style="width:100%; height:100%; border:0; display:none;"></iframe>
-              <img id="smartAdImg" alt="Help fund this website" style="width:100%; height:100%; object-fit:cover; display:block;"
-                   src="https://via.placeholder.com/320x180?text=Help+Fund+This+Website">
+  <div class="main-content">
+    <div class="games-section" id="gamesSection">
+      <div class="section-header">
+        <h1 class="section-title">Discover Amazing Games</h1>
+        <p class="section-subtitle">Choose from our curated collection of games and applications</p>
+      </div>
+      
+      <div class="games-grid" id="gamesGrid">
+        <!-- Game Cards -->
+        <div class="game-card" data-url="https://bigjackson.github.io/Run3Source/">
+          <div class="game-card-header">
+            <div class="game-icon popular">🏃</div>
+            <div class="game-info">
+              <h3 class="game-title">Run 3</h3>
+              <div class="game-category">Popular</div>
             </div>
-
-            <div class="smart-ad-body">
-              <h3 class="smart-ad-title">Help fund this website</h3>
-              <p class="smart-ad-desc">Click to help fund this site — every click counts and supports keeping the hub online.</p>
-
-              <div class="smart-ad-actions">
-                <a id="smartAdCTA"
-                   class="smart-ad-cta"
-                   href="https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6"
-                   target="_blank" rel="noopener noreferrer">
-                  Click to Help — Every Click Counts. Ads That Say You Have a Virus are FALSE!!!
-                </a>
-                <button id="smartAdPreviewBtn" class="smart-ad-secondary" aria-label="Preview ad">Preview</button>
-              </div>
+          </div>
+          <p class="game-description">
+            An endless running game where you navigate through space tunnels. Save progress at: the-sawfish.github.io/Run3Final/
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
             </div>
+            <button class="play-button">Play Now</button>
           </div>
         </div>
 
-        <!-- ===== NEW: SAFARI-FRIENDLY SMARTLINK BANNER ===== -->
-        <div class="ad-slot">
-          <iframe
-            src="//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js"
-            style="width:320px; height:50px; border:0; overflow:hidden;"
-            scrolling="no"
-            sandbox="allow-scripts allow-same-origin allow-popups"
-            title="Smartlink Banner"
-            loading="lazy">
-          </iframe>
+        <div class="game-card" data-url="https://the-sawfish.github.io/chat1234567890/login.html">
+          <div class="game-card-header">
+            <div class="game-icon app">💬</div>
+            <div class="game-info">
+              <h3 class="game-title">Chat App</h3>
+              <div class="game-category">Communication</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Connect with friends and colleagues through our real-time chat application. Temporarily down for maintenance.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge warning">Maintenance</span>
+            </div>
+            <button class="play-button">View Status</button>
+          </div>
         </div>
 
+        <div class="game-card" data-url="https://the-sawfish.github.io/call-app/">
+          <div class="game-card-header">
+            <div class="game-icon app">📞</div>
+            <div class="game-info">
+              <h3 class="game-title">Call App</h3>
+              <div class="game-category">Communication</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Make high-quality voice and video calls with our intuitive communication platform.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Launch App</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://clockmantellstime.github.io/unblocked/territorial.html">
+          <div class="game-card-header">
+            <div class="game-icon action">⚔️</div>
+            <div class="game-info">
+              <h3 class="game-title">Territorial</h3>
+              <div class="game-category">Strategy</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Strategic territory control game where you expand your domain and defend your borders.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Play Now</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://clockmantellstime.github.io/unblocked/slope.html">
+          <div class="game-card-header">
+            <div class="game-icon action">🏃‍♂️</div>
+            <div class="game-info">
+              <h3 class="game-title">Slope</h3>
+              <div class="game-category">Action</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Fast-paced endless running game where you control a ball rolling down a slope, avoiding obstacles.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Play Now</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://duckmath.github.io">
+          <div class="game-card-header">
+            <div class="game-icon puzzle">🦆</div>
+            <div class="game-info">
+              <h3 class="game-title">DuckMath</h3>
+              <div class="game-category">Educational</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Educational math game featuring our friendly duck character. Learn and practice math skills interactively.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Learn & Play</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/chilibowlflash/index.html">
+          <div class="game-card-header">
+            <div class="game-icon classic">🎯</div>
+            <div class="game-info">
+              <h3 class="game-title">More Games Collection</h3>
+              <div class="game-category">Collection</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Explore our extensive collection of Flash games and classic arcade favorites.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Browse Games</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://jimeneutron.github.io/Game/">
+          <div class="game-card-header">
+            <div class="game-icon backup">💾</div>
+            <div class="game-info">
+              <h3 class="game-title">Jim's Backup Games</h3>
+              <div class="game-category">Backup</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Alternative gaming hub with backup games and additional entertainment options.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Access Backup</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://coding-horror.github.io/basic-computer-games/">
+          <div class="game-card-header">
+            <div class="game-icon retro">💻</div>
+            <div class="game-info">
+              <h3 class="game-title">Classic Computer Games</h3>
+              <div class="game-category">Retro</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Vintage computer games collection for those who appreciate classic gaming experiences.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Go Retro</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://sites.google.com/reverestudent.org/game-portal/home">
+          <div class="game-card-header">
+            <div class="game-icon backup">🔗</div>
+            <div class="game-info">
+              <h3 class="game-title">Backup Site #2</h3>
+              <div class="game-category">Backup</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Secondary backup portal with additional games and mirrored content.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Visit Backup</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://fletcherism.github.io/">
+          <div class="game-card-header">
+            <div class="game-icon community">👤</div>
+            <div class="game-info">
+              <h3 class="game-title">Fletcherism Official</h3>
+              <div class="game-category">Community</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Official website and portal for Fletcherism with community features and content.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Visit Site</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/VihaanPresentation/">
+          <div class="game-card-header">
+            <div class="game-icon special">🎬</div>
+            <div class="game-info">
+              <h3 class="game-title">Vihaan Recording</h3>
+              <div class="game-category">Special</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Interactive presentation and recording portal. WORKING: VIHAAN RECORDING ON NOW!
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Live</span>
+            </div>
+            <button class="play-button">Join Recording</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/Contact/">
+          <div class="game-card-header">
+            <div class="game-icon contact">📧</div>
+            <div class="game-info">
+              <h3 class="game-title">Contact Us</h3>
+              <div class="game-category">Support</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Get in touch with our team for support, feedback, or partnership inquiries.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Active</span>
+            </div>
+            <button class="play-button">Contact</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://tommalbran.github.io/games/">
+          <div class="game-card-header">
+            <div class="game-icon retro">🎮</div>
+            <div class="game-info">
+              <h3 class="game-title">Retro Games Hub</h3>
+              <div class="game-category">Retro</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Dedicated collection of retro games and classic arcade experiences.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Play Retro</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://hyperrushnet.github.io">
+          <div class="game-card-header">
+            <div class="game-icon arcade">🚀</div>
+            <div class="game-info">
+              <h3 class="game-title">HyperRush Network</h3>
+              <div class="game-category">Games</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Fast-paced arcade games and additional entertainment content.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Play Now</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://symmetrical-fiesta-v6p6v5j6xpr62xg6v-4173.app.github.dev">
+          <div class="game-card-header">
+            <div class="game-icon tools">🛠️</div>
+            <div class="game-info">
+              <h3 class="game-title">Game Platform</h3>
+              <div class="game-category">Tools</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Comprehensive gaming platform with many games. Sometimes may be down. If doesn't load, go to the bottom link.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge warning">Unstable</span>
+            </div>
+            <button class="play-button">Try Platform</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/BCHS-Unblocked-Games/home.html">
+          <div class="game-card-header">
+            <div class="game-icon recommended">⭐</div>
+            <div class="game-info">
+              <h3 class="game-title">BCHS Unblocked Games</h3>
+              <div class="game-category">Recommended</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Extensive collection of unblocked games with advanced cloaking features and tons of content.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Play Games</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/BrowserRecommendations/">
+          <div class="game-card-header">
+            <div class="game-icon browser">🌐</div>
+            <div class="game-info">
+              <h3 class="game-title">Browser Recommendations</h3>
+              <div class="game-category">Tools</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Professional recommendations for unblocked browsers and secure browsing solutions.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Get Recommendations</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://obscure-space-goldfish-v6jw6gv5p9g72wr44-3000.app.github.dev/">
+          <div class="game-card-header">
+            <div class="game-icon browser">🔒</div>
+            <div class="game-info">
+              <h3 class="game-title">Public Unblocked Browser</h3>
+              <div class="game-category">Tools</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Highly recommended unblocked browser. Go to Browser Recommendations first. Terms and policies apply.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Available</span>
+            </div>
+            <button class="play-button">Launch Browser</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://the-sawfish.github.io/Terms/">
+          <div class="game-card-header">
+            <div class="game-icon special">📋</div>
+            <div class="game-info">
+              <h3 class="game-title">Terms & Policies</h3>
+              <div class="game-category">Legal</div>
+            </div>
+          </div>
+          <p class="game-description">
+            Terms of service and privacy policies for using our gaming platforms and services.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Active</span>
+            </div>
+            <button class="play-button">Read Terms</button>
+          </div>
+        </div>
+
+        <div class="game-card" data-url="https://theburritoedition.com/">
+          <div class="game-card-header">
+            <div class="game-icon community">🌯</div>
+            <div class="game-info">
+              <h3 class="game-title">The Burrito Edition</h3>
+              <div class="game-category">Community</div>
+            </div>
+          </div>
+          <p class="game-description">
+            You know: More games and entertainment content in our burrito-themed gaming edition.
+          </p>
+          <div class="game-footer">
+            <div class="game-status">
+              <span class="status-badge online">Online</span>
+            </div>
+            <button class="play-button">Explore</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
-    <iframe id="gameFrame" title="Game Frame" tabindex="0" allowfullscreen></iframe>
-  </div>
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+    </div>
 
-  <div class="overlay" id="inGameOverlay" style="display:none;">
-    <button id="backBtn" class="small-btn" title="Back to menu (Esc)">Back</button>
+    <div id="frameWrap">
+      <!-- Full Page Filler with Ad Card -->
+      <div id="pageFiller">
+        <div id="adWrap">
+          <div class="ad-slot" aria-label="Support the site">
+            <div class="smart-ad" role="region" aria-label="Help fund this website">
+              <div class="smart-ad-media" id="smartAdMedia">
+                <iframe id="smartAdIframe"
+                        src="about:blank"
+                        title="Ad Preview"
+                        sandbox="allow-scripts allow-popups allow-same-origin"
+                        loading="lazy"
+                        style="width:100%; height:100%; border:0; display:none;"></iframe>
+                <img id="smartAdImg" alt="Help fund this website" style="width:100%; height:100%; object-fit:cover; display:block;"
+                     src="https://via.placeholder.com/320x180?text=Help+Fund+This+Website">
+              </div>
+
+              <div class="smart-ad-body">
+                <h3 class="smart-ad-title">Help fund this website</h3>
+                <p class="smart-ad-desc">Click to help fund this site — every click counts and supports keeping the hub online.</p>
+
+                <div class="smart-ad-actions">
+                  <a id="smartAdCTA"
+                     class="smart-ad-cta"
+                     href="https://www.revenuecpmgate.com/a0zvxv1sx6?key=5fc98d209df5ddd2e828f234386c38d6"
+                     target="_blank" rel="noopener noreferrer">
+                    Click to Help — Every Click Counts. Ads That Say You Have a Virus are FALSE!!!
+                  </a>
+                  <button id="smartAdPreviewBtn" class="smart-ad-secondary" aria-label="Preview ad">Preview</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Smartlink Banner -->
+          <div class="ad-slot">
+            <iframe
+              src="//pl27533361.revenuecpmgate.com/75/b7/98/75b7981b4bfed60888196379f7e9f15a.js"
+              style="width:320px; height:50px; border:0; overflow:hidden;"
+              scrolling="no"
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              title="Smartlink Banner"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint" id="focusHint">Click inside the game once to enable keyboard controls</div>
+      <iframe id="gameFrame" title="Game Frame" tabindex="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="overlay" id="inGameOverlay" style="display:none;">
+      <button id="backBtn" class="small-btn" title="Back to menu (Esc)">← Back to Games</button>
+    </div>
   </div>
 
 <script>
 // ===== MAIN GAME LOADER =====
 (function(){
   const frame = document.getElementById('gameFrame');
-  const menu = document.getElementById('menu');
-  const topbar = document.getElementById('topbar');
+  const gamesGrid = document.getElementById('gamesGrid');
+  const gamesSection = document.getElementById('gamesSection');
+  const header = document.querySelector('.header');
   const overlay = document.getElementById('inGameOverlay');
   const backBtn = document.getElementById('backBtn');
   const hint = document.getElementById('focusHint');
   const pageFiller = document.getElementById('pageFiller');
+  const loadingOverlay = document.getElementById('loadingOverlay');
 
   let currentURL = '';
 
@@ -282,17 +1158,38 @@
 
   function loadGame(url){
     currentURL = url;
+    
+    // Show loading overlay
+    loadingOverlay.classList.add('show');
+    
+    // Hide games section and header
+    gamesSection.classList.add('hidden');
+    header.style.display = 'none';
+    pageFiller.style.display = 'none';
+    overlay.style.display = 'flex';
+    
+    // Load the game
     frame.src = url;
     frame.style.display = 'block';
-    if(pageFiller) pageFiller.style.display = 'none';
-    topbar.style.display = 'none';
-    overlay.style.display = 'flex';
-    showHint();
-
+    
+    // Hide loading overlay when iframe loads
     frame.onload = function(){
-      try { frame.focus(); frame.contentWindow.focus(); } catch(e){}
+      loadingOverlay.classList.remove('show');
+      try { 
+        frame.focus(); 
+        frame.contentWindow.focus(); 
+      } catch(e){}
     };
-    setTimeout(()=>{ try{ frame.focus(); frame.contentWindow.focus(); }catch(e){} }, 120);
+    
+    setTimeout(()=>{
+      loadingOverlay.classList.remove('show');
+      try{ 
+        frame.focus(); 
+        frame.contentWindow.focus(); 
+      }catch(e){} 
+    }, 2000);
+    
+    showHint();
   }
 
   let hintTimer;
@@ -306,13 +1203,22 @@
     frame.src = 'about:blank';
     frame.style.display = 'none';
     overlay.style.display = 'none';
-    topbar.style.display = 'flex';
-    if(pageFiller) pageFiller.style.display = 'flex';
+    gamesSection.classList.remove('hidden');
+    header.style.display = 'block';
+    pageFiller.style.display = 'flex';
+    loadingOverlay.classList.remove('show');
     currentURL = '';
   }
 
-  menu.querySelectorAll('.menu-btn').forEach(btn => {
-    btn.addEventListener('click', () => { loadGame(btn.getAttribute('data-url')); });
+  // Event delegation for game cards
+  gamesGrid.addEventListener('click', (e) => {
+    const gameCard = e.target.closest('.game-card');
+    if (gameCard) {
+      const playButton = e.target.closest('.play-button');
+      if (playButton || gameCard) {
+        loadGame(gameCard.getAttribute('data-url'));
+      }
+    }
   });
 
   backBtn.addEventListener('click', backToMenu);
