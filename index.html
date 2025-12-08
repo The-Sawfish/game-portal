@@ -657,6 +657,37 @@
   }
 </style>
 </head>
+	<div id="pwa-popup" style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 320px;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 15px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+">
+    <p style="margin: 0 0 8px;">
+        Offline mode is in progress!  
+        For the full-screen immersive version, tap <b>Share → Add to Home Screen</b> in Safari.
+    </p>
+    <button id="pwa-close" style="
+        background: #ffffff; 
+        color: #000;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+    ">OK</button>
+</div>
 <body>
   <div class="header">
     <div class="header-content">
