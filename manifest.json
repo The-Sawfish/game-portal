@@ -1,0 +1,21 @@
+{
+  "name": "The Sawfish Game Portal",
+  "short_name": "Sawfish",
+  "start_url": "/game-portal/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "description": "The Sawfish Game Portal — a quick launcher for all your games.",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
