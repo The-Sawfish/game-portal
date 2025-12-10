@@ -13,24 +13,32 @@ const FILES_TO_CACHE = [
 
 
 // Install event — cache core files
-self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(FILES_TO_CACHE);
-        })
+self.addEventListener("fetch", event => {
+  const url = new URL(event.request.url);
+
+  // Cache every file inside /retrobowl/
+  if (url.pathname.startsWith("/game-portal/retrobowl/")) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        return cached || fetch(event.request).then(response => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
+        });
+      })
     );
-    self.skipWaiting();
+    return;
+  }
+
+  // Cache the rest normally
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      return cached || fetch(event.request);
+    })
+  );
 });
 
-// Fetch event — serve cached files when offline
-self.addEventListener("fetch", event => {
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            // return cached response if available
-            return response || fetch(event.request);
-        })
-    );
-});
 
 // Activate event — clean old cache versions
 self.addEventListener("activate", event => {
