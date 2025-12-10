@@ -4,12 +4,13 @@ const CACHE_NAME = "seraph-v1";
 const CACHE_NAME = "seraph-v1";
 
 const FILES_TO_CACHE = [
-    "/game-portal/",
-    "/game-portal/index.html",
-    "/game-portal/manifest.json",
-    "/game-portal/icons/icon-192.png",
-    "/game-portal/retrobowl/index.html",
+  "/game-portal/",
+  "/game-portal/index.html",
+  "/game-portal/manifest.json",
+  "/game-portal/icons/icon-192.png",
+  "/game-portal/icons/icon-512.png",
 ];
+
 
 // Install event — cache core files
 self.addEventListener("install", event => {
