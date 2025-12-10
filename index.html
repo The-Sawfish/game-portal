@@ -704,6 +704,13 @@
         cursor: pointer;
     ">OK</button>
 </div>
+	<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/game-portal/service-worker.js")
+    .catch(err => console.error("SW registration failed:", err));
+}
+</script>
+
 <body>
   <div class="header">
     <div class="header-content">
