@@ -10,6 +10,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Game Portal</title>
 <style>
+	.game-launch-btn {
+    display: inline-block;
+    padding: 12px 18px;
+    background: #614bc3;
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 12px 0;
+    transition: 0.2s;
+}
+
+.game-launch-btn:hover {
+    background: #513daa;
+}
   :root { 
     --primary: #1e293b;
     --primary-light: #334155;
@@ -1378,5 +1394,12 @@ var infolinks_wsid = 0;
     });
 });
 </script>
+	<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
+
 </body>
 </html>
