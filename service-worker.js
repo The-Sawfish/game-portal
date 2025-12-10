@@ -1,12 +1,14 @@
 const CACHE_NAME = "seraph-v1";
 
 // Add all files you want cached here
-const FILES_TO_CACHE = [
-    "/",                         // homepage
-    "/index.html",
+const CACHE_NAME = "seraph-v1";
 
-    // Retro Bowl files (add more if you have subfolders)
-    "/retrobowl/index.html",
+const FILES_TO_CACHE = [
+    "/game-portal/",
+    "/game-portal/index.html",
+    "/game-portal/manifest.json",
+    "/game-portal/icons/icon-192.png",
+    "/game-portal/retrobowl/index.html",
 ];
 
 // Install event — cache core files
