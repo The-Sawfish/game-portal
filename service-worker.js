@@ -24,7 +24,7 @@ self.addEventListener("fetch", event => {
           })
           .catch(() => {
             // If offline and not cached → fail gracefully
-            return caches.match("/offline.html"); 
+          
           });
       })
     )
