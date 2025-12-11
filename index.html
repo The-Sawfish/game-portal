@@ -5,9 +5,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sawfish">
-<link rel="apple-touch-icon" href="/game-portal/icons/icon-192.png">
 <link rel="manifest" href="https://the-sawfish.github.io/game-portal/manifest.json">
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Game Portal</title>
@@ -760,13 +758,6 @@
         cursor: pointer;
     ">OK</button>
 </div>
-	<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/game-portal/service-worker.js")
-    .catch(err => console.error("SW registration failed:", err));
-}
-</script>
-
 <body>
   <div class="header">
     <div class="header-content">
@@ -1452,7 +1443,6 @@ if ("serviceWorker" in navigator) {
 var infolinks_pid = 3441272;
 var infolinks_wsid = 0;
 </script>
-<script type="text/javascript" src="http://resources.infolinks.com/js/infolinks_main.js"></script>
 <script>window.addEventListener("load", () => {
     const popup = document.getElementById("pwa-popup");
     const closeBtn = document.getElementById("pwa-close");
@@ -1468,15 +1458,6 @@ var infolinks_wsid = 0;
         popup.style.pointerEvents = "none";
     });
 });
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-  navigator.serviceWorker.register("service-worker.js")
-  .then(() => console.log("Service Worker registered"))
-  .catch(err => console.error("SW registration failed:", err));
-  });
-}
-</script>
 
 <script>
 // Show popup after 500ms
@@ -1494,6 +1475,16 @@ document.getElementById("closeOfflineNotice").addEventListener("click", () => {
   popup.style.opacity = "0";
   popup.style.visibility = "hidden";
 });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/game-portal/service-worker.js")
+      .then(() => console.log("Service Worker registered"))
+      .catch(err => console.error("SW registration failed:", err));
+  });
+}
 </script>
 
 </body>
