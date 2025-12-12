@@ -1,37 +1,27 @@
-const CACHE_VERSION = "v10"; 
-const CACHE_NAME = `offline-cache-${CACHE_VERSION}`;
+// Version for cache invalidation
+const CACHE_VERSION = "v1";
+const CACHE_NAME = `sawfish-cache-${CACHE_VERSION}`;
 
-// Cache-first forever
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
+const OFFLINE_URL = "/game-portal/offline.html";
 
-  event.respondWith(
+// Pre-cache important core files
+self.addEventListener("install", event => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
-      cache.match(event.request).then(response => {
-        // If file is cached → use it forever
-        if (response) {
-          return response;
-        }
-
-        // If not cached → fetch and cache it permanently
-        return fetch(event.request)
-          .then(networkResponse => {
-            // Only save successful GET responses
-            if (networkResponse.ok) {
-              cache.put(event.request, networkResponse.clone());
-            }
-            return networkResponse;
-          })
-          .catch(() => {
-            // If offline and not cached → fail gracefully
-          
-          });
-      })
+      cache.addAll([
+        "/game-portal/",
+        "/game-portal/index.html",
+        OFFLINE_URL,
+        "/game-portal/icons/icon-192.png",
+        "/game-portal/icons/icon-512.png"
+      ])
     )
   );
+
+  self.skipWaiting();
 });
 
-// Remove old versions of cache on activation
+// Clean old caches
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -41,5 +31,28 @@ self.addEventListener("activate", event => {
           .map(key => caches.delete(key))
       )
     )
+  );
+
+  self.clients.claim();
+});
+
+// Network-first strategy with offline fallback
+self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Save fetched files to cache
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      })
+      .catch(() => {
+        // If offline → return cached file if available
+        return caches.match(event.request)
+          .then(cached => cached || caches.match(OFFLINE_URL));
+      })
   );
 });
