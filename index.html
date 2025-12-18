@@ -10,6 +10,53 @@
 <meta charset="utf-8" />
 <title>Game Portal</title>
 <style>
+	.notice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.notice-modal {
+  background: #fff;
+  max-width: 700px;
+  width: 90%;
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notice-modal h1 {
+  margin-bottom: 12px;
+}
+
+.notice-modal p {
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.close-btn {
+  margin-top: 20px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
 	.game-launch-btn {
     display: inline-block;
     padding: 12px 18px;
@@ -774,6 +821,29 @@
     </div>
   </div>
 
+	<!-- App Store Notice -->
+<div class="notice-overlay" id="noticeOverlay">
+  <div class="notice-modal">
+    <h1>🚧 We’re Building an App Store!</h1>
+    <p>
+      We are currently working on an <strong>App Store</strong> that will be released near the
+      <strong>beginning of January</strong>.
+    </p>
+    <p>
+      We’re looking for <strong>thoughtful and innovative app ideas</strong>.
+      We can guarantee <strong>90% of apps</strong> will be built if they are creative and well thought out.
+    </p>
+    <p>
+      👉 Submit your idea here:<br />
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWH4Awxs92e1EBcR9S-iBVInNzmtbhLgFBgcUaHFiCEcuzg/viewform?usp=publish-editor" target="_blank">
+        Google Form
+      </a>
+    </p>
+    <button class="close-btn" id="closeNotice">Close</button>
+  </div>
+</div>
+
+
   <div class="main-content">
     <div class="games-section" id="gamesSection">
       <div class="section-header">
@@ -1487,5 +1557,17 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("noticeOverlay").style.display = "flex";
+    }, 1200); // delay before showing
+  });
+
+  document.getElementById("closeNotice").addEventListener("click", () => {
+    document.getElementById("noticeOverlay").style.display = "none";
+  });
+</script>
+	
 </body>
 </html>
