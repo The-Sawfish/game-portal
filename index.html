@@ -10,53 +10,88 @@
 <meta charset="utf-8" />
 <title>Game Portal</title>
 <style>
-	.notice-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
+	.appstore-banner {
+	  position: fixed;
+	  bottom: 20px;
+	  right: 20px;
+	  max-width: 320px;
+	  background: linear-gradient(145deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+	  background-size: 300% 300%;
+	  color: #1a1a2e;
+	  padding: 0;
+	  border-radius: 20px;
+	  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	  z-index: 9999;
+	  box-shadow: 0 10px 40px rgba(255, 107, 107, 0.4);
+	  animation: gradientShift 4s ease infinite;
+	  overflow: hidden;
+	}
 
-.notice-modal {
-  background: #111;
-  max-width: 700px;
-  width: 90%;
-  padding: 32px 28px;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.6s ease forwards;
-}
+	@keyframes gradientShift {
+	  0%, 100% { background-position: 0% 50%; }
+	  50% { background-position: 100% 50%; }
+	}
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+	.appstore-banner-inner {
+	  padding: 20px;
+	  background: rgba(255, 255, 255, 0.95);
+	  margin: 3px;
+	  border-radius: 17px;
+	}
 
-.notice-modal h1 {
-  margin-bottom: 12px;
-}
+	.appstore-banner h3 {
+	  margin: 0 0 8px 0;
+	  font-size: 18px;
+	  font-weight: 800;
+	  color: #1a1a2e;
+	}
 
-.notice-modal p {
-  line-height: 1.6;
-  margin-bottom: 14px;
-}
+	.appstore-banner p {
+	  margin: 0 0 14px 0;
+	  font-size: 13px;
+	  color: #4a4a6a;
+	  line-height: 1.4;
+	}
 
-.close-btn {
-  margin-top: 20px;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #111;
-  color: #fff;
-  cursor: pointer;
-}
+	.appstore-banner .appstore-icon {
+	  font-size: 36px;
+	  margin-bottom: 10px;
+	  display: block;
+	}
+
+	.appstore-banner .appstore-link {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 8px;
+	  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	  color: white;
+	  padding: 10px 18px;
+	  border-radius: 25px;
+	  text-decoration: none;
+	  font-weight: 700;
+	  font-size: 14px;
+	  transition: all 0.3s ease;
+	  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+	}
+
+	.appstore-banner .appstore-link:hover {
+	  transform: translateY(-2px) scale(1.05);
+	  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+	}
+
+	.appstore-banner .appstore-link svg {
+	  width: 18px;
+	  height: 18px;
+	}
+
+	@media (max-width: 480px) {
+	  .appstore-banner {
+	    bottom: 10px;
+	    right: 10px;
+	    left: 10px;
+	    max-width: none;
+	  }
+	}
 	.game-launch-btn {
     display: inline-block;
     padding: 12px 18px;
@@ -837,27 +872,20 @@
     </div>
   </div>
 
-	<!-- App Store Notice -->
-<div class="notice-overlay" id="noticeOverlay">
-  <div class="notice-modal">
-    <h1>🚧 We’re Building an App Store!</h1>
-    <p>
-      We are currently working on an <strong>App Store</strong> that will be released near the
-      <strong>beginning of January</strong>.
-    </p>
-    <p>
-      We’re looking for <strong>thoughtful and innovative app ideas</strong>.
-      We can guarantee <strong>90% of apps</strong> will be built if they are creative and well thought out.
-    </p>
-    <p>
-      👉 Submit your idea here:<br />
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHWH4Awxs92e1EBcR9S-iBVInNzmtbhLgFBgcUaHFiCEcuzg/viewform?usp=publish-editor" target="_blank">
-        Google Form
-      </a>
-    </p>
-    <button class="close-btn" id="closeNotice">Close</button>
+<!-- App Store Banner -->
+<a href="https://the-sawfish.github.io/appstore" target="_blank" class="appstore-banner" aria-label="Visit our App Store">
+  <div class="appstore-banner-inner">
+    <span class="appstore-icon">🛍️</span>
+    <h3>Visit Our App Store</h3>
+    <p>Discover amazing apps and games in our new App Store!</p>
+    <span class="appstore-link">
+      Open AppStore
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+      </svg>
+    </span>
   </div>
-</div>
+</a>
 
 
   <div class="main-content">
@@ -1573,17 +1601,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<script>
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      document.getElementById("noticeOverlay").style.display = "flex";
-    }, 1200); // delay before showing
-  });
-
-  document.getElementById("closeNotice").addEventListener("click", () => {
-    document.getElementById("noticeOverlay").style.display = "none";
-  });
-</script>
 	
 </body>
 </html>
