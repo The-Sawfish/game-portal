@@ -13,6 +13,26 @@
 		gtag('config', 'G-N3VEKZZWMD');
 	</script>
 
+	<script>
+  // Wait for the page to load completely
+  window.addEventListener('load', function() {
+    
+    // Check if there is actually an iframe on the current screen
+    var gameIframe = document.querySelector('iframe');
+    
+    if (gameIframe) {
+      // Send a heartbeat event every 20 seconds to keep GA4 awake
+      setInterval(function() {
+        gtag('event', 'game_session_heartbeat', {
+          'event_category': 'Engagement',
+          'engagement_status': 'active'
+        });
+      }, 20000); // 20000 milliseconds = 20 seconds
+    }
+  });
+</script>
+
+
 	
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
